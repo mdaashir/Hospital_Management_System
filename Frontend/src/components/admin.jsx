@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaUsers, FaUserMd, FaPlus, FaEdit, FaBrain, FaChild, FaFemale, FaHeartbeat, FaStethoscope,  FaTooth } from 'react-icons/fa';
 import { FaPersonWalking } from "react-icons/fa6";
 import { LiaBandAidSolid } from "react-icons/lia";
+import { GiStomach } from "react-icons/gi";
 import { SlCalender } from "react-icons/sl";
 import { TiDelete } from "react-icons/ti";
 import PatientRegistrationForm from './patient_register';
@@ -23,16 +24,15 @@ const AdminDashboard = () => {
   };
 
   const departments = {
-    neurology: 'neurology',
-    pediatrician: 'pediatrician',
-    gynecology: 'gynecology',
-    cardiology: 'cardiology',
-    physiotherapy: 'physiotherapy',
-    general_physician: 'general Physician',
-    dentist: 'dentist',
-    dermatology: 'dermatology',
-    gastrology: 'gastrology'
-    // Add other departments here
+    neurology: { name: 'Neurology', icon: <FaBrain className="mr-2 text-blue-500" /> },
+    pediatrician: { name: 'Pediatrician', icon: <FaChild className="mr-2 text-blue-500" /> },
+    gynecology: { name: 'Gynecology', icon: <FaFemale className="mr-2 text-blue-500" /> },
+    cardiology: { name: 'Cardiology', icon: <FaHeartbeat className="mr-2 text-blue-500" /> },
+    physiotherapy: { name: 'Physiotherapy', icon: <FaPersonWalking className="mr-2 text-blue-500" /> },
+    general_physician: { name: 'General Physician', icon: <FaStethoscope className="mr-2 text-blue-500" /> },
+    dentist: { name: 'Dentist', icon: <FaTooth className="mr-2 text-blue-500" /> },
+    dermatology: { name: 'Dermatology', icon: <LiaBandAidSolid className="mr-2 text-blue-500" /> },
+    gastrology: { name: 'Gastrology', icon: <GiStomach className="mr-2 text-blue-500" /> },
   };
 
   return (
@@ -96,7 +96,8 @@ const AdminDashboard = () => {
                 onClick={() => handleOptionClick(departmentKey)}
               >
                 {/* Use the department name from the 'departments' object */}
-                {departments[departmentKey]}
+                {departments[departmentKey].icon}
+                {departments[departmentKey].name}
               </li>
             ))}
           </ul>
@@ -118,7 +119,7 @@ const AdminDashboard = () => {
             {selectedOption === 'removeDoctor' && <RemoveDoctor/>}
             {selectedOption === 'ViewAppointments' && <ViewAllAppointments/>}
             {/* Pass the department name to DepartmentDoctorsView */}
-            {departments[selectedOption] && <DepartmentDoctorsView department={departments[selectedOption]} />}
+            {departments[selectedOption] && <DepartmentDoctorsView department={departments[selectedOption].name}/>}
           </div>
         )}
       </div>
