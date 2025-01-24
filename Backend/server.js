@@ -18,10 +18,10 @@ const port = process.env.PORT || 3000;
 
 // MySQL connection configuration
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST || 'sql12.freesqldatabase.com',
+  host: process.env.DB_HOST || '34.47.151.192',
   port: 3306,
-  user: process.env.DB_USER || 'sql12759310',
-  password: process.env.DB_PASSWORD || '7KwYc56577',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'hello',
   database: process.env.DB_NAME || 'sql12759310',
 });
 
