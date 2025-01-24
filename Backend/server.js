@@ -22,7 +22,7 @@ const connection = mysql.createConnection({
   port: 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'hello',
-  database: process.env.DB_NAME || 'sql12759310',
+  database: process.env.DB_NAME || 'hospital',
 });
 
 connection.connect((err) => {
