@@ -70,8 +70,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import hospitalLogo from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/Hospital_name.jpg';
-import backgroundImg from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/background.jpg'; 
+import hospitalLogo from '../assets/Hospital_name.jpg';
+import backgroundImg from '../assets/background.jpg'; 
 // Adjust the path accordingly
 
 const LoginForm = () => {

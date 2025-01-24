@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import bgImg from 'C:/Users/Kaaviya/Desktop/React/Hospital/src/assets/bg_patient.jpeg';
+import bgImg from '../assets/bg_patient.jpeg';
 
 const Pt = () => {
     // State variables to store form data
