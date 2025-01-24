@@ -357,10 +357,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import './pregister.css'; // Import CSS for additional styling
 //import React from 'react';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 
 const PatientId = () => {
-        // State variables to store form data
+    // State variables to store form data
 
     const [patientId, setPatientId] = useState('');
     const [patientData, setPatientData] = useState(null);
@@ -372,7 +373,11 @@ const PatientId = () => {
             const fetchPatientDetails = async () => {
                 try {
                     console.log(patientId);
-                    const response = await axios.get(`http://localhost:9021/api/patient_id/${patientId}`);
+                    const apiUrl = process.env.NODE_ENV === "production"
+                        ? PROD_BACKEND_URL + `/api/patient_id/${patientId}`
+                        : `http://localhost:9021/api/patient_id/${patientId}`;
+
+                    const response = await axios.get(apiUrl);
                     setPatientData(response.data[0]); // Accessing the first object in the array
                 } catch (error) {
                     setError(error);

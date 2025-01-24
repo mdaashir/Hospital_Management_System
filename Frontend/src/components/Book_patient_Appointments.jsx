@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const BookAppointment = () => {
   const [patientId, setPatientId] = useState('');
@@ -9,12 +10,11 @@ const BookAppointment = () => {
   const [appointmentType, setAppointmentType] = useState('');
   const [appointmentReason, setAppointmentReason] = useState('');
   const [message, setMessage] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Send appointment details to the server
-      await axios.post('http://localhost:9021/api/bookAppointment', {
+      await axios.post(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL + "/api/bookAppointment" : "http://localhost:9021/api/bookAppointment"}`, {
         patientId,
         doctorId,
         appointmentDate,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const RemoveDoctor = () => {
     const [doctorId, setDoctorId] = useState('');
@@ -9,10 +10,16 @@ const RemoveDoctor = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:9021/api/removeDoctor', {
-                doctorId,
-                reason
-            });
+            await axios.post(
+                process.env.NODE_ENV === "production"
+                    ? `${PROD_BACKEND_URL}/api/removeDoctor`
+                    : 'http://localhost:9021/api/removeDoctor',
+                {
+                    doctorId,
+                    reason
+                }
+            );
+
             // Reset form fields
             setDoctorId('');
             setReason('');
@@ -40,10 +47,10 @@ const RemoveDoctor = () => {
                 </div>
                 <div className="mb-6">
                     <label htmlFor="reason" className="block text-gray-700">Reason :</label>
-                    <textarea 
-                        id="reason" 
-                        value={reason} 
-                        onChange={(e) => setReason(e.target.value)} 
+                    <textarea
+                        id="reason"
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
                         required
                         className="appearance-none border form-input mt-1 block w-full text-gray-700 leading-tight focus:outline-none"
                     />

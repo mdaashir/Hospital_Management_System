@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
+
 const PatientView = () => {
     // State variables to store form data
     const [patientsData, setPatientData] = useState(null);
@@ -9,7 +11,11 @@ const PatientView = () => {
     useEffect(() => {
         const fetchPatientDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:9021/api/patients_view');
+                const response = await axios.get(
+                    process.env.NODE_ENV === "production"
+                        ? `${PROD_BACKEND_URL}/api/patients_view`
+                        : 'http://localhost:9021/api/patients_view'
+                );
                 setPatientData(response.data);
                 console.log(response.data);
 
@@ -33,7 +39,7 @@ const PatientView = () => {
                 } else {
                     console.log('No patient data available');
                 }  */}
-                                
+
             } catch (error) {
                 console.log(error);
                 setError('Error fetching patient data');
@@ -46,32 +52,32 @@ const PatientView = () => {
         return () => {
             // Any cleanup code goes here (if needed)
         };
-    }, []); 
+    }, []);
 
     return (
         <div>
             <div className="mb-6 text-2xl font-bold text-center" style={{ color: 'blue', fontFamily: 'Cambria, sans-serif' }}>
-            <h2>View All Patients</h2>
+                <h2>View All Patients</h2>
             </div>
             {error && <p>{error}</p>}
             {patientsData && patientsData.length > 0 ? (
                 <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                     <thead>
                         <tr>
-                        <th style={{ width: '5%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Patient ID</th>
-                        <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Name</th>
-                        <th style={{ width: '5%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Age</th>
-                        <th style={{ width: '12%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>DOB</th>
-                        <th style={{ width: '8%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Gender</th>
-                        <th style={{ width: '20%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Address</th>
-                        <th style={{ width: '12%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Contact</th>
-                        <th style={{ width: '8%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Blood Group</th>
-                        <th style={{ width: '6%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Height (cm)</th>
-                        <th style={{ width: '6%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Weight (kg)</th>
-                        <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Marital Status</th>
-                        <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.89em', textAlign: 'center', padding: '8px' }}>Any prior Medications?</th>
-                    </tr>
-                </thead>
+                            <th style={{ width: '5%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Patient ID</th>
+                            <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Name</th>
+                            <th style={{ width: '5%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Age</th>
+                            <th style={{ width: '12%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>DOB</th>
+                            <th style={{ width: '8%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Gender</th>
+                            <th style={{ width: '20%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Address</th>
+                            <th style={{ width: '12%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Contact</th>
+                            <th style={{ width: '8%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Blood Group</th>
+                            <th style={{ width: '6%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Height (cm)</th>
+                            <th style={{ width: '6%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Weight (kg)</th>
+                            <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.9em', textAlign: 'center', padding: '8px' }}>Marital Status</th>
+                            <th style={{ width: '10%', border: '1px solid #CCCCCC', fontSize: '0.89em', textAlign: 'center', padding: '8px' }}>Any prior Medications?</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {patientsData.map(patient => (
                             <tr key={patient.pid}>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
+
 const PatientAppointments = ({ patientId }) => {
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState(null);
@@ -9,8 +11,8 @@ const PatientAppointments = ({ patientId }) => {
     const fetchAppointments = async () => {
       try {
         console.log("patient ID:", patientId); // Log the doctorId prop
-        
-        const response = await axios.get(`http://localhost:9021/api/patient_all_appointments/${patientId}`);
+
+        const response = await axios.get(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL + `/api/patient_all_appointments/${patientId}` : ` http://localhost:9021/api/patient_all_appointments/${patientId}`}`);
         setAppointments(response.data);
       } catch (error) {
         setError(error.message);

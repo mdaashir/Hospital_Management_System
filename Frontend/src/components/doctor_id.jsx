@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const DoctorId = () => {
     const [doctorData, setDoctorData] = useState(null);
@@ -11,7 +12,7 @@ const DoctorId = () => {
         if (submitted && doctorId) {
             const fetchDoctorDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:9021/api/doctorid/${doctorId}`);
+                    const response = await axios.get(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL+`/api/doctorid/${doctorId}`:`http://localhost:9021/api/doctorid/${doctorId}`}`);
                     setDoctorData(response.data[0]); // Accessing the first object in the array
                 } catch (error) {
                     setError(error);

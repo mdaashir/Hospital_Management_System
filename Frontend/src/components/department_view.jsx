@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const DepartmentDoctorsView = ({ department }) => {
     const [doctorsData, setDoctorData] = useState(null);
@@ -10,7 +11,7 @@ const DepartmentDoctorsView = ({ department }) => {
         const fetchDeptDoctors = async () => {
             try {
                 console.log(department);
-                const response = await axios.get(`http://localhost:9021/api/department_doc_view/${department}`);
+                const response = await axios.get(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL +`/api/department_doc_view/${department}` :`http://localhost:9021/api/department_doc_view/${department}`}`);
                 setDoctorData(response.data);
                 console.log(response.data);
                 //alert('Fetched successfully');

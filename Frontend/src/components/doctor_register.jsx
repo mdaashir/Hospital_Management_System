@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const DoctorRegistrationForm = () => {
   const [doctorName, setDoctorName] = useState('');
@@ -10,7 +11,7 @@ const DoctorRegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:9021/api/addDoctor', {
+      await axios.post(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL+"/api/addDoctor":"http://localhost:9021/api/addDoctor"}`, {
         doctorName: doctorName,
         specialization: specialization,
         qualification: qualification,

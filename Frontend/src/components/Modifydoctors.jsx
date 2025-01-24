@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const ModifyDoctors = () => {
     const [doctorId, setDoctorId] = useState('');
@@ -10,7 +11,12 @@ const ModifyDoctors = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:9021/api/modifyDoctor', {
+            await axios.post(`${process.env.NODE_ENV === "production" ? PROD_BACKEND_URL + "/api/modifyDoctor" : ("http://localhost:9021/api/modifyDoctor")}`,
+                ({
+                    doctorId,
+                    detailColumn,
+                    newValue
+                }), {
                 doctorId,
                 detailColumn,
                 newValue

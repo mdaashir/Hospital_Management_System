@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
+
 const Modifypatient = () => {
   const [patientId, setPatientId] = useState('');
   const [detailColumn, setDetailColumn] = useState('');
@@ -9,7 +11,12 @@ const Modifypatient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:9021/api/modifyPatient', {
+      await axios.post(`${process.env.NODE_ENV === "production" ? PROD_BACKEND_URL + "/api/modifyPatient" : ("http://localhost:9021/api/modifyPatient")}`,
+        ({
+          doctorId,
+          detailColumn,
+          newValue
+        }), {
         patientId,
         detailColumn,
         newValue
@@ -48,15 +55,15 @@ const Modifypatient = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="detailColumn">
             Detail Column
           </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="detailColumn"
-              type="text"
-              placeholder="Enter detail column"
-              value={detailColumn}
-              onChange={(e) => setDetailColumn(e.target.value)}
-              required
-            >
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="detailColumn"
+            type="text"
+            placeholder="Enter detail column"
+            value={detailColumn}
+            onChange={(e) => setDetailColumn(e.target.value)}
+            required
+          >
             <option value="">Select</option>
             <option value="name">Patient Name</option>
             <option value="age">Age</option>
@@ -70,7 +77,7 @@ const Modifypatient = () => {
             <option value="marital_status">Marital Status</option>
             <option value="weight">Weight</option>
             <option value="medications">Medications</option>
-            </select>
+          </select>
         </div>
 
         <div className="mb-6">
