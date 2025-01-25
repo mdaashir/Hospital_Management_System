@@ -9,7 +9,7 @@ const PatientView = () => {
     const [patientsData, setPatientData] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log(PROD_BACKEND_URL); 
+    console.log("backend:",PROD_BACKEND_URL); 
     
     useEffect(() => {
         const fetchPatientDetails = async () => {
