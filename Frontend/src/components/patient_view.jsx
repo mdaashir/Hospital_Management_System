@@ -13,8 +13,8 @@ const PatientView = () => {
             try {
                 const response = await axios.get(
                     process.env.NODE_ENV === "production"
-                        ? `${PROD_BACKEND_URL}/api/patients_view`
-                        : 'http://localhost:9021/api/patients_view'
+                        ? `${PROD_BACKEND_URL}/api/patients`
+                        : 'http://localhost:9021/api/patients'
                 );
                 setPatientData(response.data);
                 console.log(response.data);
