@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
-console.log(PROD_BACKEND_URL); 
+
 
 const PatientView = () => {
     // State variables to store form data
     const [patientsData, setPatientData] = useState(null);
     const [error, setError] = useState(null);
 
+    console.log(PROD_BACKEND_URL); 
+    
     useEffect(() => {
         const fetchPatientDetails = async () => {
             try {
