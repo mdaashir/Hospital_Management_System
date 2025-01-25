@@ -126,12 +126,10 @@ app.get('/api/doctors', (req, res) => {
       console.error('Error fetching doctor details:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
-    // MySQL procedure output is usually in results[0] and each column is a key-value pair
     console.log(results);
     const doctorsJsonString = results[0][0].doctors; // Extract the JSON string
-    console.log(patientsJsonString);
+    console.log(doctorsJsonString);
     try {
-      // Parse the string as JSON and send the data
       const doctorsData = JSON.parse(doctorsJsonString);
       res.json(doctorsData);  // Return as proper JSON
     } catch (parseError) {
