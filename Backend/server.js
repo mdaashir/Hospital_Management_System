@@ -118,6 +118,7 @@ app.get('/api/doctors', (req, res) => {
   });
 });
 
+
 // Modify patient details
 app.put('/api/patient', (req, res) => {
   const { patientId, detailColumn, newValue } = req.body;
