@@ -96,23 +96,13 @@ app.get('/api/patients', (req, res) => {
     }
 
     // MySQL procedure output is usually in results[0] and each column is a key-value pair
-    if (results[0] && results[0][0] && results[0][0].patients) {
-      const patientsJSON = results[0][0].patients; // Access the 'patients' JSON array string from the result
-
-      try {
-        // Parse the JSON string into a JavaScript object/array
-        const patients = JSON.parse(patientsJSON);
-
-        // Send the parsed JSON array as the response
-        res.json(patients);
-      } catch (jsonErr) {
-        console.error('Error parsing JSON:', jsonErr);
-        return res.status(500).json({ error: 'Internal server error' });
-      }
-    } else {
-      // Handle case where the result doesn't contain the expected 'patients' field
-      console.error('No patient data found');
-      return res.status(404).json({ error: 'No patient data found' });
+    const patientsJsonString = results[0][0].patients; // Extract the JSON string
+    try {
+        const patientsData = JSON.parse(patientsJsonString); // Convert to JSON object
+        res.json(patientsData); // Send the JSON data to the frontend
+    } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        res.status(500).send('Error parsing JSON');
     }
   });
 });
