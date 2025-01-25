@@ -15,10 +15,10 @@ const PatientView = () => {
                 const response = await axios.get(
                     process.env.NODE_ENV === "production"
                         ? `${PROD_BACKEND_URL}/api/patients`
-                        : 'http://localhost:9021/api/patients'
+                        : 'https://hospital-management-system-uksf.onrender.com/api/patients'
                 );
                 setPatientData(response.data);
-                console.log(response.data);
+                console.log(response);
 
                 // Assuming patientsData is the array received from the backend
                 { /*if (patientsData && patientsData.length > 0) {
