@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
+console.log(PROD_BACKEND_URL); 
 
 const PatientView = () => {
     // State variables to store form data
@@ -13,8 +14,8 @@ const PatientView = () => {
             try {
                 const response = await axios.get(
                     process.env.NODE_ENV === "production"
-                        ? `${PROD_BACKEND_URL}/api/patients_view`
-                        : 'http://localhost:9021/api/patients_view'
+                        ? `${PROD_BACKEND_URL}/api/patients`
+                        : 'http://localhost:9021/api/patients'
                 );
                 setPatientData(response.data);
                 console.log(response.data);

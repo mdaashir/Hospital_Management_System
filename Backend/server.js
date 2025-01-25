@@ -78,7 +78,7 @@ app.get('/api/patient/:patientId', (req, res) => {
 });
 
 // Fetch all patients
-app.get('/api/patients', (req, res) => {
+/*app.get('/api/patients', (req, res) => {
   connection.query('CALL GetAllPatients()', (err, results) => {
     if (err) {
       console.error('Error fetching patient details:', err);
@@ -86,7 +86,30 @@ app.get('/api/patients', (req, res) => {
     }
     res.json(results[0]);
   });
+});*/
+
+app.get('/api/patients', (req, res) => {
+  connection.query('CALL GetAllPatients()', (err, results) => {
+    if (err) {
+      console.error('Error fetching patient details:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log(results);
+    
+    // Assuming the stored procedure returns the JSON array of patients as a string
+    const patientsJSON = results[0][0].patients; // Access the 'patients' JSON array from the result
+    try {
+      // Parse the JSON string to convert it back to a JavaScript object/array
+      const patients = JSON.parse(patientsJSON);
+      console.log(patients);
+      res.json(patients); // Send the parsed JSON array as the response
+    } catch (jsonErr) {
+      console.error('Error parsing JSON:', jsonErr);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 });
+
 
 // Fetch all doctors
 app.get('/api/doctors', (req, res) => {
