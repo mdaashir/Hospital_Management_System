@@ -69,6 +69,7 @@ BEGIN
     DECLARE medications ENUM('yes', 'no');
     
     DECLARE patients TEXT DEFAULT '[]';  -- Initialize an empty JSON array
+    DECLARE isFirst BOOLEAN DEFAULT TRUE;  -- To track the first patient
 
     DECLARE cur CURSOR FOR 
         SELECT * FROM Patient;
@@ -76,24 +77,47 @@ BEGIN
     
     OPEN cur;
 
+    SET patients = '[';  -- Start the JSON array
     read_loop: LOOP
         FETCH cur INTO pid, pname, age, dob, gender, address, mobile_number, blood_group, height, weight, marital_status, medications;
         IF done THEN
             LEAVE read_loop;
         END IF;
 
-        -- Construct a JSON object for the current patient
-        SET patients = JSON_OBJECT(patients, '$', JSON_OBJECT('pid', pid, 'pname', pname, 'age', age, 'dob', dob, 'gender', gender, 'address', address, 'mobile_number', mobile_number, 'blood_group', blood_group, 'height', height, 'weight', weight, 'marital_status', marital_status, 'medications', medications));
-        -- Debug statement: Print fetched values
-        -- SELECT pid, pname, age, dob, gender, address, mobile_number, blood_group, height, weight, marital_status, medications;
+        -- Add a comma if it's not the first patient
+        IF NOT isFirst THEN
+            SET patients = CONCAT(patients, ',');
+        ELSE
+            SET isFirst = FALSE;  -- After first patient, subsequent patients need a comma
+        END IF;
+
+        -- Construct a JSON object for the current patient and append it to the JSON array
+        SET patients = CONCAT(patients, 
+            '{"pid":', pid, 
+            ',"pname":"', pname, '"', 
+            ',"age":', age, 
+            ',"dob":"', dob, '"',
+            ',"gender":"', gender, '"',
+            ',"address":"', address, '"',
+            ',"mobile_number":"', mobile_number, '"',
+            ',"blood_group":"', blood_group, '"',
+            ',"height":', height,
+            ',"weight":', weight,
+            ',"marital_status":"', marital_status, '"',
+            ',"medications":"', medications, '"}'
+        );
     END LOOP;
 
     CLOSE cur;
 
+    -- Close the JSON array
+    SET patients = CONCAT(patients, ']');
+
     -- Debug statement: Print the JSON array containing patient details
     SELECT patients;
 END;
-// DELIMITER 
+// DELIMITER ;
+
 
 DELIMITER //
 call GetAllPatients();
@@ -195,7 +219,7 @@ END;
 // DELIMITER
 
 DELIMITER //
-CALL InsertDoctor('Joseph', 'Cardiology',	'MBBS., MD', 6789054321);
+CALL InsertDoctor('Lia', 'Cardiology',	'MBBS., MD', 6789054331);
 // DELIMITER
 
 
