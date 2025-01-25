@@ -10,7 +10,7 @@ const DoctorView = () => {
     useEffect(() => {
         const fetchDoctorDetails = async () => {
             try {
-                const response = await axios.get(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL + "/api/doctors_view" : "http://localhost:9021/api/doctors_view"}`);
+                const response = await axios.get(`${process.env.NODE_ENV == "production" ? PROD_BACKEND_URL + "/api/doctors" : "http://localhost:9021/api/doctors"}`);
                 setDoctorData(response.data);
                 console.log(response.data);
             } catch (error) {

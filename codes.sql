@@ -116,7 +116,7 @@ BEGIN
     -- Debug statement: Print the JSON array containing patient details
     SELECT patients;
 END;
-// DELIMITER ;
+// DELIMITER 
 
 
 DELIMITER //
@@ -187,7 +187,6 @@ END;
 
 -- ****************
 
-
 CREATE TABLE Doctors (
     DoctorID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
@@ -201,8 +200,8 @@ select * from Doctors;
 
 DELIMITER //
 UPDATE Doctors
-SET qualification = 'BDS., MDS'
-WHERE DoctorId = 4;
+SET Name = 'James'
+WHERE DoctorId = 2;
 // DELIMITER
 
 DELIMITER //
@@ -329,39 +328,52 @@ BEGIN
     DECLARE specialization VARCHAR(255);
     DECLARE contact VARCHAR(20);
    
-    DECLARE doctor_details JSON DEFAULT  JSON_ARRAY() ; -- Initialize an empty JSON object
-
+	DECLARE doctor_details TEXT DEFAULT '[]'; 
+	DECLARE isFirst BOOLEAN DEFAULT TRUE;  
+    
     DECLARE cur CURSOR FOR
         SELECT * FROM Doctors;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; -- Handler for end of cursor loop
    
     OPEN cur;
 
+    SET doctor_details = '[';  -- Start the JSON array
     read_loop: LOOP
         FETCH cur INTO doc_id, dname, specialization, qualification, contact;
         IF done THEN
             LEAVE read_loop;
         END IF;
-
         IF doc_id = doctor_id THEN
-            -- Construct a JSON object for the current doctor
-            SET doctor_details= JSON_ARRAY_APPEND(doctor_details, '$', JSON_OBJECT('doc_id', doc_id, 'dname', dname, 'specialization', specialization, 'qualification', qualification, 'contact', contact));
-        END IF;
-        END LOOP;
-   
-    CLOSE cur;
+            IF NOT isFirst THEN
+                SET doctor_details = CONCAT(doctor_details, ',');
+            ELSE
+                SET isFirst = FALSE;  -- After first doctor, subsequent doctors need a comma
+            END IF;
 
-    -- Return the JSON object containing doctor details
+            SET doctor_details = CONCAT(doctor_details, 
+                '{"doc_id":', doc_id, 
+                ',"dname":"', dname, '"', 
+                ',"qualification":"', qualification, '"',
+                ',"specialization":"', specialization, '"',
+                ',"contact":"', contact, '"}'
+            );
+        END IF;
+    END LOOP;
+    
+    CLOSE cur;
+    
+    SET doctor_details = CONCAT(doctor_details, ']');
     SELECT doctor_details;
 END;
 // DELIMITER
 
 DELIMITER //
-CALL Getdoctorsid(1);
+CALL Getdoctorsid(3);
 // DELIMITER
 
-
-
+DELIMITER //
+drop procedure if exists Getdoctorsid;
+// DELIMITER
 
 
 DELIMITER //
@@ -370,11 +382,12 @@ BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE doc_id INT;
     DECLARE dname VARCHAR(255);
-    DECLARE qualification VARCHAR(255);
     DECLARE specialization VARCHAR(255);
+    DECLARE qualification VARCHAR(255);
     DECLARE contact VARCHAR(20);
 
-    DECLARE doctors JSON DEFAULT JSON_ARRAY(); -- Initialize an empty JSON array
+    DECLARE doctors TEXT DEFAULT '[]';  
+    DECLARE isFirst BOOLEAN DEFAULT TRUE;
 
     DECLARE cur CURSOR FOR 
         SELECT * FROM Doctors;
@@ -382,22 +395,31 @@ BEGIN
     
     OPEN cur;
 
+     SET doctors = '[';  
     read_loop: LOOP
         FETCH cur INTO doc_id, dname, specialization, qualification, contact;
         IF done THEN
             LEAVE read_loop;
         END IF;
 
-        -- Construct a JSON object for the current patient
-        SET doctors = JSON_ARRAY_APPEND(doctors, '$', JSON_OBJECT('doc_id', doc_id, 'dname', dname, 'specialization', specialization, 'qualification', qualification, 'contact', contact));
+        IF NOT isFirst THEN
+            SET doctors = CONCAT(doctors, ',');
+        ELSE
+            SET isFirst = FALSE;  -- After first doctor, subsequent doctors need a comma
+        END IF;
         
-        -- Debug statement: Print fetched values
-        -- SELECT pid, pname, age, dob, gender, address, mobile_number, blood_group, height, weight, marital_status, medications;
+        SET doctors = CONCAT(doctors, 
+            '{"doc_id":', doc_id, 
+            ',"dname":"', dname, '"', 
+            ',"qualification":"', qualification, '"',
+            ',"specialization":"', specialization, '"',
+            ',"contact":"', contact, '"}'
+        );
     END LOOP;
-
+    
     CLOSE cur;
-
-    -- Debug statement: Print the JSON array containing patient details
+    
+    SET doctors = CONCAT(doctors, ']');
     SELECT doctors;
 END;
 // DELIMITER 
@@ -424,45 +446,51 @@ BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE doc_id INT;
     DECLARE dname VARCHAR(255);
-    DECLARE qualification VARCHAR(255);
     DECLARE specialization VARCHAR(255);
+    DECLARE qualification VARCHAR(255);
     DECLARE contact VARCHAR(20);
    
-    DECLARE doctors_spec JSON DEFAULT JSON_ARRAY(); -- Initialize an empty JSON array
+	DECLARE doctors_spec TEXT DEFAULT '[]';  
+    DECLARE isFirst BOOLEAN DEFAULT TRUE;
 
     DECLARE cur CURSOR FOR
         SELECT * FROM Doctors;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; -- Handler for end of cursor loop
-   
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
     OPEN cur;
-   
+    SET doctors_spec = '[';  -- Start the JSON array
     read_loop: LOOP
         FETCH cur INTO doc_id, dname, specialization, qualification, contact;
         IF done THEN
             LEAVE read_loop;
         END IF;
+        IF LOWER(TRIM(specialization)) = LOWER(TRIM(deptname)) THEN
+            IF NOT isFirst THEN
+                SET doctors_spec = CONCAT(doctors_spec, ',');
+            ELSE
+                SET isFirst = FALSE;  
+            END IF;
 
-        -- Debug statement: Print fetched values
--- SELECT doc_id, dname, specialization, qualification, contact;
-
-IF LOWER(specialization) = LOWER(deptname) THEN
--- Construct a JSON object for the current patient
-SET doctors_spec = JSON_ARRAY_APPEND(doctors_spec, '$', JSON_OBJECT('doc_id', doc_id, 'dname', dname, 'specialization', specialization, 'qualification', qualification, 'contact', contact));
+            SET doctors_spec = CONCAT(doctors_spec, 
+                '{"doc_id":', doc_id, 
+                ',"dname":"', dname, '"', 
+                ',"qualification":"', qualification, '"',
+                ',"specialization":"', specialization, '"',
+                ',"contact":"', contact, '"}'
+            );
         END IF;
     END LOOP;
-   
     CLOSE cur;
-
-    -- Debug statement: Print the JSON array containing patient details
+    
+    SET doctors_spec = CONCAT(doctors_spec, ']');
     SELECT doctors_spec;
 END;
 // DELIMITER
 
 
 DELIMITER //
-call Get_dept_Doctors('Cardiology');
+call Get_dept_Doctors('Dentist');
 // DELIMITER 
-
 
 
 DELIMITER //
@@ -499,7 +527,7 @@ DELIMITER //
 drop trigger if exists InsertDoctortriggers;	
 // DELIMITER
 
--- ****************
+-- ************************************************************
 
 DELIMITER //
 CREATE TABLE Appointments (
@@ -535,6 +563,13 @@ END;
 DELIMITER //
 select * from Appointments;
 // DELIMITER
+
+DELIMITER //
+drop procedure InsertAppointment;
+// DELIMITER
+
+
+
 
 DELIMITER //
 CREATE PROCEDURE Get_AppointmentDetails_docId(
@@ -669,21 +704,6 @@ END ;
 // DELIMITER 
 
 -- **************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 DELIMITER //

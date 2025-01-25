@@ -111,7 +111,7 @@ app.get('/api/patients', (req, res) => {
 
 
 // Fetch all doctors
-app.get('/api/doctors', (req, res) => {
+/*app.get('/api/doctors', (req, res) => {
   connection.query('CALL GetAllDoctors()', (err, results) => {
     if (err) {
       console.error('Error fetching doctor details:', err);
@@ -119,7 +119,30 @@ app.get('/api/doctors', (req, res) => {
     }
     res.json(results[0]);
   });
+});*/
+app.get('/api/doctors', (req, res) => {
+  connection.query('CALL GetAllDoctors()', (err, results) => {
+    if (err) {
+      console.error('Error fetching doctor details:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    // MySQL procedure output is usually in results[0] and each column is a key-value pair
+    console.log(results);
+    const doctorsJsonString = results[0][0].doctors; // Extract the JSON string
+    console.log(patientsJsonString);
+    try {
+      // Parse the string as JSON and send the data
+      const doctorsData = JSON.parse(doctorsJsonString);
+      res.json(doctorsData);  // Return as proper JSON
+    } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        res.status(500).send('Error parsing JSON');
+    }
+  });
 });
+
+
+
 
 // Modify patient details
 app.put('/api/patient', (req, res) => {
