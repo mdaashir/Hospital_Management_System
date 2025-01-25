@@ -20,7 +20,7 @@ const PatientView = () => {
                         : 'https://hospital-management-system-uksf.onrender.com/api/patients'
                 );
                 setPatientData(response.data);
-                console.log(response.data[0]);
+                console.log('response: ',response.data[0]);
 
                 // Assuming patientsData is the array received from the backend
                 { /*if (patientsData && patientsData.length > 0) {
