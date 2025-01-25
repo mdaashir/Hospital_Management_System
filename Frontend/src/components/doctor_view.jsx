@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 const PROD_BACKEND_URL = import.meta.env.VITE_PROD_BACKEND_URL
 
 const DoctorView = () => {
