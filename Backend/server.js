@@ -14,15 +14,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const port = process.env.PORT || 9021;
+const port = process.env.PORT || 3000;
 
-// MySQL connection configuration
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST || 'sql12.freesqldatabase.com',
-  port: 3306,
-  user: process.env.DB_USER || 'sql12759310',
-  password: process.env.DB_PASSWORD || '7KwYc56577',
-  database: process.env.DB_NAME || 'sql12759310',
+  host: '34.47.151.192',  // Replace with your new database host
+  port: 3306,               // Replace with your database port if different
+  user: 'root',     // Replace with your new database username
+  password: 'your_new_password', // Replace with your new database password
+  database: 'sql12759310', // Replace with your new database name
 });
 
 connection.connect((err) => {
@@ -78,7 +77,7 @@ app.get('/api/patient/:patientId', (req, res) => {
 });
 
 // Fetch all patients
-/*app.get('/api/patients', (req, res) => {
+app.get('/api/patients', (req, res) => {
   connection.query('CALL GetAllPatients()', (err, results) => {
     if (err) {
       console.error('Error fetching patient details:', err);
@@ -86,9 +85,9 @@ app.get('/api/patient/:patientId', (req, res) => {
     }
     res.json(results[0]);
   });
-});*/
+});
 
-app.get('/api/patients', (req, res) => {
+/*app.get('/api/patients', (req, res) => {
   connection.query('CALL GetAllPatients()', (err, results) => {
     if (err) {
       console.error('Error fetching patient details:', err);
@@ -105,7 +104,7 @@ app.get('/api/patients', (req, res) => {
         res.status(500).send('Error parsing JSON');
     }
   });
-});
+});*/
 
 
 // Fetch all doctors
