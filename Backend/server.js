@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require("dotenv");
+
 const mysql = require('mysql');
 
-dotenv.config();
+
 
 const app = express();
 app.use(cors({
@@ -14,7 +14,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // MySQL connection configuration
 const connection = mysql.createConnection({
