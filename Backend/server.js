@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv= require('dotenv');
+const dotenv = require("dotenv");
 const mysql = require('mysql');
 
 dotenv.config();
@@ -18,13 +18,12 @@ const port = process.env.PORT || 3000;
 
 // MySQL connection configuration
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST || '34.47.151.192',
+  host: process.env.DB_HOST || 'sql12.freesqldatabase.com',
   port: 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'your_new_password',
+  user: process.env.DB_USER || 'sql12759310',
+  password: process.env.DB_PASSWORD || '7KwYc56577',
   database: process.env.DB_NAME || 'sql12759310',
 });
-
 
 connection.connect((err) => {
   if (err) {
@@ -72,14 +71,14 @@ app.get('/api/patient/:patientId', (req, res) => {
       return res.status(500).json({ error: 'Internal server error' });
     }
     if (results[0].length === 0) {
-      return res.status(404).json({ error: `Patient with ID ${patientId} not found` });
+      return res.status(404).json({ error: Patient with ID ${patientId} not found });
     }
     res.json(results[0]);
   });
 });
 
 // Fetch all patients
-app.get('/api/patients', (req, res) => {
+/*app.get('/api/patients', (req, res) => {
   connection.query('CALL GetAllPatients()', (err, results) => {
     if (err) {
       console.error('Error fetching patient details:', err);
@@ -87,7 +86,27 @@ app.get('/api/patients', (req, res) => {
     }
     res.json(results[0]);
   });
+});*/
+
+app.get('/api/patients', (req, res) => {
+  connection.query('CALL GetAllPatients()', (err, results) => {
+    if (err) {
+      console.error('Error fetching patient details:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    // MySQL procedure output is usually in results[0] and each column is a key-value pair
+    const patientsJsonString = results[0][0].patients; // Extract the JSON string
+    try {
+        const patientsData = JSON.parse(patientsJsonString); // Convert to JSON object
+        res.json(patientsData); // Send the JSON data to the frontend
+    } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        res.status(500).send('Error parsing JSON');
+    }
+  });
 });
+
 
 // Fetch all doctors
 app.get('/api/doctors', (req, res) => {
@@ -168,5 +187,5 @@ app.delete('/api/doctor', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on ${port}`);
+  console.log(Server is running on ${port});
 });
