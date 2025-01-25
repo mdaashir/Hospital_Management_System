@@ -89,18 +89,19 @@ app.get('/api/patient/:patientId', (req, res) => {
 });*/
 
 app.get('/api/patients', (req, res) => {
-  console.log(req);
   connection.query('CALL GetAllPatients()', (err, results) => {
     if (err) {
       console.error('Error fetching patient details:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
-
     // MySQL procedure output is usually in results[0] and each column is a key-value pair
+    console.log(results);
     const patientsJsonString = results[0][0].patients; // Extract the JSON string
+    console.log(patientsJsonString);
     try {
-        const patientsData = JSON.parse(patientsJsonString); // Convert to JSON object
-        res.json(patientsData); // Send the JSON data to the frontend
+      // Parse the string as JSON and send the data
+      const patientsData = JSON.parse(patientsJsonString);
+      res.json(patientsData);  // Return as proper JSON
     } catch (parseError) {
         console.error('Error parsing JSON:', parseError);
         res.status(500).send('Error parsing JSON');
@@ -188,5 +189,5 @@ app.delete('/api/doctor', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Server is running on ${port}");
+  console.log(`Server is running on ${port}`);
 });
