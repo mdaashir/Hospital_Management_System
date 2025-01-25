@@ -9,18 +9,18 @@ const PatientView = () => {
     const [patientsData, setPatientData] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log("backend:",PROD_BACKEND_URL); 
-    
+
     useEffect(() => {
         const fetchPatientDetails = async () => {
             try {
                 const response = await axios.get(
                     process.env.NODE_ENV === "production"
                         ? `${PROD_BACKEND_URL}/api/patients`
-                        : 'https://hospital-management-system-uksf.onrender.com/api/patients'
+                        : `https://hospital-management-system-uksf.onrender.com/api/patients`
                 );
                 setPatientData(response.data);
-                console.log('response: ',response.data[0]);
+                console.log(response);
+                console.log(PROD_BACKEND_URL); 
 
                 // Assuming patientsData is the array received from the backend
                 { /*if (patientsData && patientsData.length > 0) {
