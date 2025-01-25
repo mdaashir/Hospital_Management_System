@@ -71,7 +71,7 @@ app.get('/api/patient/:patientId', (req, res) => {
       return res.status(500).json({ error: 'Internal server error' });
     }
     if (results[0].length === 0) {
-      return res.status(404).json({ error: Patient with ID ${patientId} not found });
+      return res.status(404).json({ error: "Patient with ID ${patientId} not found" });
     }
     res.json(results[0]);
   });
@@ -187,5 +187,5 @@ app.delete('/api/doctor', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(Server is running on ${port});
+  console.log("Server is running on ${port}");
 });

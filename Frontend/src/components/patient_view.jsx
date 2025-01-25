@@ -15,11 +15,7 @@ const PatientView = () => {
                 const response = await axios.get(
                     process.env.NODE_ENV === "production"
                         ? `${PROD_BACKEND_URL}/api/patients`
-<<<<<<< HEAD
                         : 'https://hospital-management-system-uksf.onrender.com/api/patients'
-=======
-                        : 'http://localhost:9021/api/patients'
->>>>>>> a00f39c5fe333eace93db4addae114834a2ff9c1
                 );
                 setPatientData(response.data);
                 console.log(response);
