@@ -131,6 +131,7 @@ app.get('/api/doctors', (req, res) => {
     console.log(doctorsJsonString);
     try {
       const doctorsData = JSON.parse(doctorsJsonString);
+      console.log(doctorsData);
       res.json(doctorsData);  // Return as proper JSON
     } catch (parseError) {
         console.error('Error parsing JSON:', parseError);
