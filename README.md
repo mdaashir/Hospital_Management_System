@@ -1,6 +1,12 @@
 # 🏥 SignifyHealth
 
-Developed a comprehensive hospital management system with modules for patients, doctors, and administrators. Patients can view details and appointment history, doctors manage profiles and appointments, and administrators oversee data and user management. Utilized SQL and PL/SQL for data handling, and React with Express (Node.js) for an interactive web interface.
+Developed a **comprehensive hospital management system** with dedicated modules for **patients**, **doctors**, and **administrators**. The system ensures a seamless healthcare experience for all users:
+
+- 👩‍⚕️ **Patients** can view their details, manage appointments, and access their appointment history.
+- 🧑‍⚕️ **Doctors** can update their profiles, manage patient appointments, and review patient details.
+- 👨‍💼 **Administrators** oversee the entire system, manage user data and maintain smooth hospital operations.
+
+
 
 ## 🚀 Tech Stack
 
