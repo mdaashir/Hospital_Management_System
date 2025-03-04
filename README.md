@@ -31,7 +31,7 @@ Developed a **comprehensive hospital management system** with dedicated modules 
 3. Backend Setup
    Install the node modules and run the Backend server:
    ```bash
-   cd Backendend
+   cd Backend
    npm install
    npm start
 
