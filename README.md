@@ -30,4 +30,5 @@ Developed a comprehensive hospital management system with modules for patients, 
    npm start
 
 
-Refer outputs directory for sample outputs
+## 📂 Sample Outputs
+Refer to the `outputs` directory for sample outputs and screenshots of the working system.
