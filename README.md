@@ -20,12 +20,14 @@ Developed a comprehensive hospital management system with modules for patients, 
 2. Frontend Setup
    Install the node modules and run the frontend server:
    ```bash
-   cd SignifyHealth
+   cd Frontend
    npm install
    npm run dev
 
 3. Backend Setup
-   Run the Backend server:
+   Install the node modules and run the Backend server:
    ```bash
+    cd Backendend
+   npm install
    npm start
 
