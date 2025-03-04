@@ -1,17 +1,16 @@
-# SignifyHealth
+# 🏥 SignifyHealth
 
 Developed a comprehensive hospital management system with modules for patients, doctors, and administrators. Patients can view details and appointment history, doctors manage profiles and appointments, and administrators oversee data and user management. Utilized SQL and PL/SQL for data handling, and React with Express (Node.js) for an interactive web interface.
 
-## Tech Stack
+## 🚀 Tech Stack
 
-- **Frontend**: React
-- **Backend**: Node.js with Express
-- **Database**: SQL, PL/SQL for data handling
+- **Frontend**: ⚛️ React
+- **Backend**: 🟢 Node.js with Express
+- **Database**: 🗄️ MySQL
 - **Other Dependencies**: 
-  - `package.json` contains details of all node modules used.
+  - 📦 `package.json` contains details of all node modules used.
 
-
-## Setup Instructions
+## 🛠️ Setup Instructions
 
 1. Clone the repository:
    ```bash
@@ -31,3 +30,5 @@ Developed a comprehensive hospital management system with modules for patients, 
    npm install
    npm start
 
+
+Refer outputs directory for sample outputs
