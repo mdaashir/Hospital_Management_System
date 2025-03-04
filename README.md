@@ -7,8 +7,7 @@ Developed a comprehensive hospital management system with modules for patients, 
 - **Frontend**: ⚛️ React
 - **Backend**: 🟢 Node.js with Express
 - **Database**: 🗄️ MySQL
-- **Other Dependencies**: 
-  - 📦 `package.json` contains details of all node modules used.
+- **Other Dependencies**: 📦 `package.json` contains details of all node modules used.
 
 ## 🛠️ Setup Instructions
 
