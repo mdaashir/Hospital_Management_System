@@ -35,6 +35,5 @@ Developed a **comprehensive hospital management system** with dedicated modules 
    npm install
    npm start
 
-
 ## 📂 Sample Outputs
 Refer to the `outputs` directory for sample outputs and screenshots of the working system.
