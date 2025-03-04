@@ -16,3 +16,16 @@ Developed a comprehensive hospital management system with modules for patients, 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Kaaviya-S-S/SignifyHealth.git
+
+2. Frontend Setup
+   Install the node modules and run the frontend server:
+   ```bash
+   cd SignifyHealth
+   npm install
+   npm run dev
+
+3. Backend Setup
+   Run the Backend server:
+   ```bash
+   npm start
+
