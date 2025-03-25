@@ -14,21 +14,16 @@ CREATE TABLE Patient (
     marital_status ENUM('single', 'married', 'divorced', 'widowed') NOT NULL,
     medications ENUM('yes', 'no') NOT NULL
 );
+
 select * from Patient;
 
-DELIMITER //
 CREATE PROCEDURE GetPatient(IN patientId INT)
 BEGIN
     SELECT * FROM Patient where patient_id=patientId;
 END;
-// DELIMITER 
 
-DELIMITER //
 call GetPatient(1);
-// DELIMITER 
 
-
-DELIMITER // 
 CREATE PROCEDURE InsertPatient(
     IN p_name VARCHAR(255),
     IN p_age INT,
@@ -46,12 +41,7 @@ BEGIN
     INSERT INTO Patient (name, age, dob, gender, address, mobile_number, blood_group, height, weight, marital_status, medications)
     VALUES (p_name, p_age, p_dob, p_gender, p_address, p_mobileNumber, p_BloodGroup, p_height, p_weight, p_maritalStatus, p_medications);
 END;
-// DELIMITER 
 
-
-
-
-DELIMITER //
 CREATE PROCEDURE GetAllPatients()
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -67,14 +57,14 @@ BEGIN
     DECLARE weight INT;
     DECLARE marital_status ENUM('single', 'married', 'divorced', 'widowed');
     DECLARE medications ENUM('yes', 'no');
-    
+
     DECLARE patients TEXT DEFAULT '[]';  -- Initialize an empty JSON array
     DECLARE isFirst BOOLEAN DEFAULT TRUE;  -- To track the first patient
 
-    DECLARE cur CURSOR FOR 
+    DECLARE cur CURSOR FOR
         SELECT * FROM Patient;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; -- Handler for end of cursor loop
-    
+
     OPEN cur;
 
     SET patients = '[';  -- Start the JSON array
@@ -92,10 +82,10 @@ BEGIN
         END IF;
 
         -- Construct a JSON object for the current patient and append it to the JSON array
-        SET patients = CONCAT(patients, 
-            '{"pid":', pid, 
-            ',"pname":"', pname, '"', 
-            ',"age":', age, 
+        SET patients = CONCAT(patients,
+            '{"pid":', pid,
+            ',"pname":"', pname, '"',
+            ',"age":', age,
             ',"dob":"', dob, '"',
             ',"gender":"', gender, '"',
             ',"address":"', address, '"',
@@ -116,27 +106,15 @@ BEGIN
     -- Debug statement: Print the JSON array containing patient details
     SELECT patients;
 END;
-// DELIMITER 
 
-
-DELIMITER //
 call GetAllPatients();
-// DELIMITER 
 
-DELIMITER //
-SHOW CREATE PROCEDURE GetAllPatients;     
-// DELIMITER 
+SHOW CREATE PROCEDURE GetAllPatients;
 
-DELIMITER //
-drop procedure if exists GetAllPatients;
-// DELIMITER 
+-- drop procedure if exists GetAllPatients;
 
-DELIMITER //
-SHOW PROCEDURE STATUS;	
-// DELIMITER 
+SHOW PROCEDURE STATUS;
 
-
-DELIMITER //
 CREATE PROCEDURE ModifyPatient(
     IN p_patientId INT,
     IN p_detailColumn VARCHAR(255),
@@ -181,11 +159,6 @@ BEGIN
             SET MESSAGE_TEXT = 'Invalid detail column';
     END CASE;
 END;
-// DELIMITER
-
-
-
--- ****************
 
 CREATE TABLE Doctors (
     DoctorID INT PRIMARY KEY AUTO_INCREMENT,
@@ -194,17 +167,13 @@ CREATE TABLE Doctors (
     Qualification VARCHAR(255) NOT NULL,
     Contact VARCHAR(20) NOT NULL
 );
-DELIMITER //
-select * from Doctors;
-// DELIMITER
 
-DELIMITER //
+select * from Doctors;
+
 UPDATE Doctors
 SET Name = 'James'
 WHERE DoctorId = 2;
-// DELIMITER
 
-DELIMITER //
 CREATE PROCEDURE InsertDoctor(
     IN doctorName VARCHAR(255),
     IN specialization VARCHAR(255),
@@ -215,33 +184,24 @@ BEGIN
     INSERT INTO Doctors (Name, Specialization, Qualification, Contact)
     VALUES (doctorName, specialization, qualification, contact);
 END;
-// DELIMITER
 
-DELIMITER //
 CALL InsertDoctor('Lia', 'Cardiology',	'MBBS., MD', 6789054331);
-// DELIMITER
 
-
-DELIMITER //
 CREATE PROCEDURE RemoveDoctor(
     IN doc_id INT,
     IN reason VARCHAR(255)
 )
 BEGIN
     DELETE FROM Doctors where DoctorId = doc_id ;
-    
+
 	UPDATE Removed_Doctors
 	set reason = reason
     where DoctorID=doc_id;
-    
+
 END;
-// DELIMITER
 
-DELIMITER //
-drop procedure RemoveDoctor;
-// DELIMITER
+-- drop procedure RemoveDoctor;
 
-DELIMITER //
 CREATE TABLE Removed_Doctors(
     DoctorID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
@@ -250,9 +210,7 @@ CREATE TABLE Removed_Doctors(
     Contact VARCHAR(20) NOT NULL,
     reason  VARCHAR(255)
 );
-// DELIMITER
 
-DELIMITER //
 CREATE TRIGGER remove_doctor_reason BEFORE DELETE ON Doctors
 FOR EACH ROW
 BEGIN
@@ -268,22 +226,13 @@ BEGIN
 		Reason
     );
 END;
-// DELIMITER
 
-DELIMITER //
-drop trigger remove_doctor_reason;
-// DELIMITER
+-- drop trigger remove_doctor_reason;
 
-DELIMITER //
 CALL RemoveDoctor(19,'Transfer to another city');
-// DELIMITER
 
-DELIMITER //
 select *from Removed_Doctors;
-// DELIMITER
 
-
-DELIMITER //
 CREATE PROCEDURE ModifyDoctor(
     IN p_doctorId INT,
     IN p_detailColumn VARCHAR(255),
@@ -313,12 +262,8 @@ BEGIN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Invalid detail column';
     END CASE;
-END; 
-//DELIMITER 
+END;
 
-
-
-DELIMITER //
 CREATE PROCEDURE Getdoctorsid(IN doctor_id INT)
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -327,14 +272,14 @@ BEGIN
     DECLARE qualification VARCHAR(255);
     DECLARE specialization VARCHAR(255);
     DECLARE contact VARCHAR(20);
-   
-	DECLARE doctor_details TEXT DEFAULT '[]'; 
-	DECLARE isFirst BOOLEAN DEFAULT TRUE;  
-    
+
+	DECLARE doctor_details TEXT DEFAULT '[]';
+	DECLARE isFirst BOOLEAN DEFAULT TRUE;
+
     DECLARE cur CURSOR FOR
         SELECT * FROM Doctors;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; -- Handler for end of cursor loop
-   
+
     OPEN cur;
 
     SET doctor_details = '[';  -- Start the JSON array
@@ -350,33 +295,26 @@ BEGIN
                 SET isFirst = FALSE;  -- After first doctor, subsequent doctors need a comma
             END IF;
 
-            SET doctor_details = CONCAT(doctor_details, 
-                '{"doc_id":', doc_id, 
-                ',"dname":"', dname, '"', 
+            SET doctor_details = CONCAT(doctor_details,
+                '{"doc_id":', doc_id,
+                ',"dname":"', dname, '"',
                 ',"qualification":"', qualification, '"',
                 ',"specialization":"', specialization, '"',
                 ',"contact":"', contact, '"}'
             );
         END IF;
     END LOOP;
-    
+
     CLOSE cur;
-    
+
     SET doctor_details = CONCAT(doctor_details, ']');
     SELECT doctor_details;
 END;
-// DELIMITER
 
-DELIMITER //
 CALL Getdoctorsid(3);
-// DELIMITER
 
-DELIMITER //
-drop procedure if exists Getdoctorsid;
-// DELIMITER
+-- drop procedure if exists Getdoctorsid;
 
-
-DELIMITER //
 CREATE PROCEDURE GetAllDoctors()
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -386,16 +324,16 @@ BEGIN
     DECLARE qualification VARCHAR(255);
     DECLARE contact VARCHAR(20);
 
-    DECLARE doctors TEXT DEFAULT '[]';  
+    DECLARE doctors TEXT DEFAULT '[]';
     DECLARE isFirst BOOLEAN DEFAULT TRUE;
 
-    DECLARE cur CURSOR FOR 
+    DECLARE cur CURSOR FOR
         SELECT * FROM Doctors;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE; -- Handler for end of cursor loop
-    
+
     OPEN cur;
 
-     SET doctors = '[';  
+    SET doctors = '[';
     read_loop: LOOP
         FETCH cur INTO doc_id, dname, specialization, qualification, contact;
         IF done THEN
@@ -407,40 +345,28 @@ BEGIN
         ELSE
             SET isFirst = FALSE;  -- After first doctor, subsequent doctors need a comma
         END IF;
-        
-        SET doctors = CONCAT(doctors, 
-            '{"doc_id":', doc_id, 
-            ',"dname":"', dname, '"', 
+
+        SET doctors = CONCAT(doctors,
+            '{"doc_id":', doc_id,
+            ',"dname":"', dname, '"',
             ',"qualification":"', qualification, '"',
             ',"specialization":"', specialization, '"',
             ',"contact":"', contact, '"}'
         );
     END LOOP;
-    
+
     CLOSE cur;
-    
+
     SET doctors = CONCAT(doctors, ']');
     SELECT doctors;
 END;
-// DELIMITER 
 
-DELIMITER //
 call GetAllDoctors();
-// DELIMITER 
 
+SHOW CREATE PROCEDURE GetAllDoctors;
 
-DELIMITER //
-SHOW CREATE PROCEDURE GetAllDoctors;     
-// DELIMITER 
+-- drop procedure if exists GetAllDoctors;
 
-DELIMITER //
-drop procedure if exists GetAllDoctors;
-// DELIMITER 
-
-
-
-
-DELIMITER //
 CREATE PROCEDURE Get_dept_Doctors(IN deptname varchar(25))
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -449,8 +375,8 @@ BEGIN
     DECLARE specialization VARCHAR(255);
     DECLARE qualification VARCHAR(255);
     DECLARE contact VARCHAR(20);
-   
-	DECLARE doctors_spec TEXT DEFAULT '[]';  
+
+	DECLARE doctors_spec TEXT DEFAULT '[]';
     DECLARE isFirst BOOLEAN DEFAULT TRUE;
 
     DECLARE cur CURSOR FOR
@@ -468,12 +394,12 @@ BEGIN
             IF NOT isFirst THEN
                 SET doctors_spec = CONCAT(doctors_spec, ',');
             ELSE
-                SET isFirst = FALSE;  
+                SET isFirst = FALSE;
             END IF;
 
-            SET doctors_spec = CONCAT(doctors_spec, 
-                '{"doc_id":', doc_id, 
-                ',"dname":"', dname, '"', 
+            SET doctors_spec = CONCAT(doctors_spec,
+                '{"doc_id":', doc_id,
+                ',"dname":"', dname, '"',
                 ',"qualification":"', qualification, '"',
                 ',"specialization":"', specialization, '"',
                 ',"contact":"', contact, '"}'
@@ -481,32 +407,19 @@ BEGIN
         END IF;
     END LOOP;
     CLOSE cur;
-    
+
     SET doctors_spec = CONCAT(doctors_spec, ']');
     SELECT doctors_spec;
 END;
-// DELIMITER
 
-
-DELIMITER //
 call Get_dept_Doctors('Dentist');
-// DELIMITER 
 
+SHOW CREATE PROCEDURE Get_dept_Doctors;
 
-DELIMITER //
-SHOW CREATE PROCEDURE Get_dept_Doctors;     
-// DELIMITER 
+-- drop procedure if exists Get_dept_Doctors;
 
-DELIMITER //
-drop procedure if exists Get_dept_Doctors;
-// DELIMITER 
+-- drop TRIGGER if exists InsertDoctortriggers;
 
-
-DELIMITER //
-drop TRIGGER if exists InsertDoctortriggers;
-// DELIMITER
-
-DELIMITER //
 CREATE TRIGGER InsertDoctortriggers AFTER INSERT ON Doctors
 FOR EACH ROW
 BEGIN
@@ -521,15 +434,9 @@ BEGIN
         VALUES (NEW.Specialization, NEW.DoctorID);
     END IF;
 END;
-// DELIMITER
 
-DELIMITER //
-drop trigger if exists InsertDoctortriggers;	
-// DELIMITER
+-- drop trigger if exists InsertDoctortriggers;
 
--- ************************************************************
-
-DELIMITER //
 CREATE TABLE Appointments (
     appointment_id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT,
@@ -540,12 +447,9 @@ CREATE TABLE Appointments (
     appointment_reason TEXT,
     FOREIGN KEY (patient_id) REFERENCES Patient(patient_id)
 );
-// DELIMITER 
--- DROP TABLE Appointments;
 
+-- -- drop TABLE Appointments;
 
-
-DELIMITER //
 CREATE PROCEDURE InsertAppointment(
     IN patient_id INT,
     IN doctor_id INT,
@@ -557,21 +461,12 @@ CREATE PROCEDURE InsertAppointment(
 BEGIN
     INSERT INTO Appointments (patient_id, doctor_id, appointment_date, appointment_time, appointment_type, appointment_reason)
     VALUES (patient_id, doctor_id, appointment_date, appointment_time, appointment_type, appointment_reason);
-END; 
-// DELIMITER
+END;
 
-DELIMITER //
 select * from Appointments;
-// DELIMITER
 
-DELIMITER //
-drop procedure InsertAppointment;
-// DELIMITER
+-- drop procedure InsertAppointment;
 
-
-
-
-DELIMITER //
 CREATE PROCEDURE Get_AppointmentDetails_docId(
     IN p_doctor_id INT,
     IN p_appointment_date DATE
@@ -591,13 +486,13 @@ BEGIN
         FROM Appointments a
         INNER JOIN Patient p ON a.patient_id = p.patient_id
         WHERE a.doctor_id = p_doctor_id AND a.appointment_date = p_appointment_date;
-       
+
     -- Declare handler for end of cursor loop
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     -- Open cursor
     OPEN cur;
-   
+
     -- Initialize an empty JSON array to store appointment details
     SELECT JSON_ARRAY() INTO @appointment_details;
 
@@ -618,17 +513,11 @@ BEGIN
     -- Return JSON array containing appointment details
     SELECT @appointment_details AS appointment_details;
 END;
-// DELIMITER
 
-DELIMITER //
-drop procedure Get_AppointmentDetails_docId;
-// DELIMITER
+-- drop procedure Get_AppointmentDetails_docId;
 
-DELIMITER //
 call Get_AppointmentDetails_docId(24,'2024-04-15')
-// DELIMITER
 
-DELIMITER //
 CREATE PROCEDURE Get_patient_all_AppointmentDetails( IN p_id INT )
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -637,19 +526,19 @@ BEGIN
     DECLARE appointment_reason TEXT;
     DECLARE appointment_time TIME;
     DECLARE appointment_date DATE;
-    
-   DECLARE cur CURSOR FOR
+
+    DECLARE cur CURSOR FOR
 	SELECT d.Name, a.appointment_type, a.appointment_reason, a.appointment_time, a.appointment_date
 	FROM Appointments a
 	INNER JOIN Doctors d ON a.doctor_id = d.DoctorID
 	WHERE a.patient_id = p_id;
-    
+
 	-- Declare handler for end of cursor loop
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     -- Open cursor
     OPEN cur;
-   
+
     -- Initialize an empty JSON array to store appointment details
     SELECT JSON_ARRAY() INTO @appointment_details;
 
@@ -669,19 +558,12 @@ BEGIN
 
     -- Return JSON array containing appointment details
     SELECT @appointment_details AS appointment_details;
-END;	
-// DELIMITER
-    
-DELIMITER // 
-drop procedure Get_patient_all_AppointmentDetails;
-// DELIMITER 
- 
-DELIMITER // 
+END;
+
+-- drop procedure Get_patient_all_AppointmentDetails;
+
 call Get_patient_all_AppointmentDetails(1);
-//  DELIMITER  
 
-
-DELIMITER //
 CREATE TRIGGER PreventDoubleBooking
 BEFORE INSERT ON Appointments
 FOR EACH ROW
@@ -701,12 +583,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Doctor is already booked at the specified date and time';
     END IF;
 END ;
-// DELIMITER 
 
--- **************
-
-
-DELIMITER //
 CREATE PROCEDURE GetAll_Appointments_date( IN appointment_date DATE )
 BEGIN
     -- Declare variables to hold appointment details
@@ -724,13 +601,13 @@ BEGIN
         INNER JOIN Patient p ON a.patient_id = p.patient_id
 		INNER JOIN Doctors d ON a.doctor_id = d.DoctorId
         WHERE a.appointment_date = appointment_date;
-       
+
     -- Declare handler for end of cursor loop
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     -- Open cursor
     OPEN cur;
-   
+
     -- Initialize an empty JSON array to store appointment details
     SELECT JSON_ARRAY() INTO @appointment_details;
 
@@ -751,42 +628,11 @@ BEGIN
     -- Return JSON array containing appointment details
     SELECT @appointment_details AS appointment_details;
 END;
-// DELIMITER 
 
-
-DELIMITER //
 CALL GetAll_Appointments_date('2024-04-15');
-// DELIMITER 
 
-DELIMITER //
-drop procedure GetAll_Appointments_date;
-// DELIMITER 
+-- drop procedure GetAll_Appointments_date;
 
-
--- **************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- ######################################################################################
 CREATE TABLE Patient_Doctor (
     appointment_id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT,
@@ -797,33 +643,22 @@ CREATE TABLE Patient_Doctor (
     -- Add more columns as needed
 );
 
-
-CREATE TABLE Department_Doctor (
-    department_doctor_id INT AUTO_INCREMENT PRIMARY KEY,
-    department_id INT,
-    doctor_id INT,
-    FOREIGN KEY (department_id) REFERENCES Departments(department_id),
-    FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
-    -- Add more columns as needed
-);
-
-DELIMITER //
-
-
-DELIMITER //
 CREATE TABLE Department (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(255),
     doctor_id INT,
     FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
 );
-// DELIMITER
 
+CREATE TABLE Department_Doctor (
+    department_doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_id INT,
+    doctor_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
+    -- Add more columns as needed
+);
 
-DELIMITER //
 select * from Department;
-// DELIMITER 
 
-DELIMITER //
-drop table Departments;
-// DELIMITER
+-- drop table Department;
