@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: frontend/Dockerfile
+      dockerfile: Frontend/Dockerfile
     ports:
       - "80:80"
     depends_on:
@@ -11,12 +11,12 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: Backend/Dockerfile
     ports:
       - "9021:9021"
     volumes:
       - ./backend:/app
-    command: ["node", "backend/executeSqlFile.js", "&&", "npm", "run", "start"]  # Run SQL before starting the server
+    # command: ["node", "backend/executeSqlFile.js", "&&", "npm", "run", "start"]  # Run SQL before starting the server
     restart: always
 
   # Optional MySQL service

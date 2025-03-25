@@ -2,11 +2,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY backend/package.json backend/package-lock.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
 
-COPY backend/ ./
+COPY . ./
 
 # Expose port 9021
 EXPOSE 9021
