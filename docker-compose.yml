@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "9021:9021"
+    volumes:
+      - ./backend:/app
+    command: ["node", "backend/executeSqlFile.js", "&&", "npm", "run", "start"]  # Run SQL before starting the server
+    restart: always
+
+  # Optional MySQL service
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password  # Set the root password for the MySQL container
+  #     MYSQL_DATABASE: mydatabase     # Set default database
+  #     MYSQL_USER: user               # Set a user for your MySQL database
+  #     MYSQL_PASSWORD: password       # Set the user's password
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql-data:/var/lib/mysql
+  #   networks:
+  #     - backend-network
+
+  # networks:
+  #  backend-network:
+  #   driver: bridge
