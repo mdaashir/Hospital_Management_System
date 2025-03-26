@@ -465,7 +465,7 @@ END;
 
 -- drop procedure Get_AppointmentDetails_docId;
 
-call Get_AppointmentDetails_docId(24,'2024-04-15')
+call Get_AppointmentDetails_docId(24,'2024-04-15');
 
 CREATE PROCEDURE Get_patient_all_AppointmentDetails( IN p_id INT )
 BEGIN
@@ -592,6 +592,13 @@ CREATE TABLE Patient_Doctor (
     -- Add more columns as needed
 );
 
+CREATE TABLE Departments (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(255),
+    doctor_id INT,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
+);
+
 CREATE TABLE Department_Doctor (
     department_doctor_id INT AUTO_INCREMENT PRIMARY KEY,
     department_id INT,
@@ -601,13 +608,6 @@ CREATE TABLE Department_Doctor (
     -- Add more columns as needed
 );
 
-CREATE TABLE Department (
-    department_id INT AUTO_INCREMENT PRIMARY KEY,
-    department_name VARCHAR(255),
-    doctor_id INT,
-    FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
-);
-
-select * from Department;
+select * from Departments;
 
 -- drop table Departments;
