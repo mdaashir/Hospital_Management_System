@@ -592,7 +592,7 @@ CREATE TABLE Patient_Doctor (
     -- Add more columns as needed
 );
 
-CREATE TABLE Departments (
+CREATE TABLE Department (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(255),
     doctor_id INT,
@@ -603,11 +603,11 @@ CREATE TABLE Department_Doctor (
     department_doctor_id INT AUTO_INCREMENT PRIMARY KEY,
     department_id INT,
     doctor_id INT,
-    FOREIGN KEY (department_id) REFERENCES Departments(department_id),
+    FOREIGN KEY (department_id) REFERENCES Department(department_id),
     FOREIGN KEY (doctor_id) REFERENCES Doctors(DoctorID)
     -- Add more columns as needed
 );
 
-select * from Departments;
+select * from Department;
 
--- drop table Departments;
+-- drop table Department;

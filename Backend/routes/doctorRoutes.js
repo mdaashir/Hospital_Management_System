@@ -273,7 +273,7 @@ router.put('/', (req, res) => {
 				console.error('Error modifying doctor:', err);
 				return res.status(500).json({ error: 'Error modifying doctor' });
 			}
-			console.log('Doctor modified successfully');
+			console.log(`Doctor ID ${doctorId} modified successfully`);
 			res.status(200).json({ message: 'Doctor modified successfully' });
 		}
 	);
