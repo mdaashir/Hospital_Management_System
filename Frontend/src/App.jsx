@@ -41,11 +41,15 @@ import Dashboard from './components/dashboard.jsx';
 import PatientPage from './components/patient.jsx';
 import AdminDashboard from './components/admin.jsx';
 import DoctorPage from './components/doctor.jsx';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 //import ServerPage from './components/admin.jsx'
 const App = () => {
 	return (
 		<Router>
+			<Analytics />
+			<SpeedInsights />
 			<Routes>
 				<Route path='/' element={<Dashboard />} />
 				<Route path='/login' element={<LoginForm />} />
