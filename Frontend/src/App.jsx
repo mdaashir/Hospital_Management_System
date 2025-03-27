@@ -44,19 +44,18 @@ import DoctorPage from './components/doctor.jsx';
 
 //import ServerPage from './components/admin.jsx'
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/login" element={<LoginForm />}/> 
-        <Route path="/doctor" element={<DoctorPage />}/>
-        <Route path="/patient" element={<PatientPage />}/>
-        <Route path="/admin" element={<AdminDashboard />}/>
-       {/* <Route path = "/admin" element={<ServerPage/>}/>  */}
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route path='/' element={<Dashboard />} />
+				<Route path='/login' element={<LoginForm />} />
+				<Route path='/doctor' element={<DoctorPage />} />
+				<Route path='/patient' element={<PatientPage />} />
+				<Route path='/admin' element={<AdminDashboard />} />
+				{/* <Route path = "/admin" element={<ServerPage/>}/>  */}
+			</Routes>
+		</Router>
+	);
 };
 
 export default App;
-

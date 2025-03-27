@@ -60,7 +60,7 @@
 
 //   const Dashboard = () => {
 //   const navigate = useNavigate();
-  
+
 
 //   const handleIconClick = (path) => {
 //     // Use the navigate function to navigate to the corresponding page
@@ -120,7 +120,7 @@
 //     navigate(path);
 //   };
 
-  
+
 //   return (
 //     <div >
 //       <div className="dashboard-container">
@@ -168,13 +168,12 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import patient from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/patient.jpg';
-import admin from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/admin.jpg';
-import doctor from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/doctor.jfif';
-//import invoice from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/invoice.jpg';
-import hospitalLogo from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/Hospital_name.jpg';
-import backgroundImg from 'C:/Users/Kaaviya/Desktop/React/Hospital/Frontend/src/assets/background.jpg'; 
-
+import patient from '../assets/patient.jpg';
+import admin from '../assets/admin.jpg';
+import doctor from '../assets/doctor.jfif';
+//import invoice from '../assets/invoice.jpg';
+import hospitalLogo from '../assets/Hospital_name.jpg';
+import backgroundImg from '../assets/background.jpg'; 
 const Dashboard = () => {
   const navigate = useNavigate();
 
